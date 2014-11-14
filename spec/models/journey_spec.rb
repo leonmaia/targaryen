@@ -15,7 +15,7 @@ RSpec.describe Journey, :type => :model do
     end
 
     it 'should have journey_id setted on location' do
-      @user = User.create!
+      @user = User.create(username: "leon", email: "hi@leon.com")
       @journey = @user.journeys.create!
       @journey.locations.create!
 
@@ -23,7 +23,7 @@ RSpec.describe Journey, :type => :model do
     end
 
     it 'can have many locations' do
-      @user = User.create!
+      @user = User.create(username: "leon", email: "hi@leon.com")
       @journey = @user.journeys.create!
       50.times { @journey.locations.create! }
 
