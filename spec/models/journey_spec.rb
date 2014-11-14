@@ -1,7 +1,4 @@
 require 'rails_helper'
-require 'database_cleaner'
-
-DatabaseCleaner.strategy = :truncation
 
 RSpec.describe Journey, :type => :model do
   describe Journey do
@@ -10,10 +7,6 @@ RSpec.describe Journey, :type => :model do
   end
 
   describe 'locations association' do
-    before(:each) do
-      DatabaseCleaner.clean
-    end
-
     it 'should have journey_id setted on location' do
       @user = User.create(username: "leon", email: "hi@leon.com", 
                           password: "foobar", password_confirmation: "foobar")
