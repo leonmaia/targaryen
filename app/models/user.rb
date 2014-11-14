@@ -8,4 +8,26 @@ class User < ActiveRecord::Base
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   has_secure_password
+
+  after_create :create_auth_token
+  after_create :create_profile
+
+  def access_token
+    token = ApiToken.active(self).first
+
+    if token.blank?
+      token = ApiToken.create(user:self, active:true)
+    end
+    token.access_token
+  end
+
+  private
+
+  def create_profile
+    Profile.create(user: self)
+  end
+
+  def create_auth_token
+    ApiToken.create(user: self, active: true)
+  end
 end
