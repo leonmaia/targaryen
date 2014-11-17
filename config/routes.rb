@@ -16,9 +16,9 @@ Rails.application.routes.draw do
 
   resources :journeys
 
-  resources :users, only: [:create] do
-    resources :profiles, only: [:update, :show]
-  end
+  resources :users, only: [:create]
+
+  get    '/:username', to: 'users#show'
 
   post   '/auth/login' => 'auth#login'
   delete '/auth/logout' => 'auth#logout'

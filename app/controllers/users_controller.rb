@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate, except: [:create, :index]
+  before_action :authenticate, except: [:create, :show]
 
   def create
     @user = User.new(user_params)
@@ -15,8 +15,13 @@ class UsersController < ApplicationController
     params.permit(:email, :password, :username)
   end
 
-  def index
-    @users = User.all
-    render json: @users
+  def show
+    if User.exists?(username: params[:username])
+      @user = User.find_by(username: params[:username])
+      render json: @user, include: :profile
+    else
+      render json: { message: "User not found" }.to_json, status: 404
+    end
   end
+
 end

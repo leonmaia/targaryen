@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   has_many :journeys
-  has_one :profile
  
   before_save { self.email = email.downcase }
   validates :username, presence: true, length: { maximum: 30 }
