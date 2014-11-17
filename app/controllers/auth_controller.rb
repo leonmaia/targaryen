@@ -4,7 +4,7 @@ class AuthController < ApplicationController
   def login
     @user = User.find_by_email(params[:email].downcase)
 
-    if @user && @user.find_by_email(params[:email].downcase)
+    if @user && @user.authenticate(params[:password])
       render json: @user, methods: [:access_token]
     else
       render_unauthorized
