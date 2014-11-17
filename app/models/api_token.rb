@@ -1,4 +1,4 @@
-Rlass ApiToken < ActiveRecord::Base
+class ApiToken < ActiveRecord::Base
   before_create :generate_access_token
   before_create :set_expiration
   before_create :deactivate_older_key

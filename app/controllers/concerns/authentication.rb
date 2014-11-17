@@ -1,5 +1,5 @@
 module Authentication
-  extend ActiveSuport::Concern
+  extend ActiveSupport::Concern
 
   def current_user
     @current_user ||= @token.user
