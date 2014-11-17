@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114201350) do
+ActiveRecord::Schema.define(version: 20141117220458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,19 @@ ActiveRecord::Schema.define(version: 20141114201350) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
+
+  create_table "reputations", force: true do |t|
+    t.integer  "up_votes"
+    t.integer  "down_votes"
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "journey_id"
+    t.integer  "profile_id"
+  end
+
+  add_index "reputations", ["journey_id"], name: "index_reputations_on_journey_id", using: :btree
+  add_index "reputations", ["profile_id"], name: "index_reputations_on_profile_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"
