@@ -16,8 +16,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    if User.exists?(username: params[:username])
-      @user = User.find_by(username: params[:username])
+    if User.exists?(username: params[:id])
+      @user = User.find_by_username(params[:id])
       render json: @user, include: :profile
     else
       render json: { message: "User not found" }.to_json, status: 404

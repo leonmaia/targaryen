@@ -1,7 +1,19 @@
 class JourneysController < ApplicationController
+  before_action :authenticate, except: [:index, :list]
+
   def index
+    if params.has_key?(:user_id)
+      @journeys = Journey.where(user_id: params[:user_id])
+      render json: @journeys, include: :locations
+    else
+      @journeys = Journey.all
+      render json: @journeys, include: :locations
+    end
+  end
+
+  def list
     @journeys = Journey.all
-    render json: @journeys
+    render json: @journeys, include: :locations
   end
 
   def update
@@ -25,6 +37,7 @@ class JourneysController < ApplicationController
   end
 
   def journey_params
-    params.require(:journey).permit(:user_id)
+    params.require(:journey).permit(:user_id, :title)
   end
+
 end
