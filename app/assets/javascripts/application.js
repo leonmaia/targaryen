@@ -12,4 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require ./bower_components/angular/angular.min
 //= require_tree .
