@@ -1,6 +1,7 @@
 {
   "name": "bower-rails generated vendor assets",
   "dependencies": {
-    "angular": "latest"
+    "angular": "latest",
+    "bootstrap": "~3.3.1"
   }
 }
