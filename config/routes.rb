@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'home#index'
   #List every journey
   get    '/journeys'    => 'journeys#index'
   
