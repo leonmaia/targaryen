@@ -14,4 +14,7 @@
 //= require jquery_ujs
 //= require angular/angular.min
 //= require angular/targaryenApp
+//= require angular-bootstrap/ui-bootstrap
+//= require angular-bootstrap/ui-bootstrap-tpls
+//= require bootstrap
 //= require_tree .
