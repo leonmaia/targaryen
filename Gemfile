@@ -38,7 +38,7 @@ end
 gem 'bcrypt'
 
 gem 'bower-rails'
-gem 'therubyracer'
+gem 'therubyracer', '0.12.0'
 gem 'less-rails'
 
 # Use ActiveModel has_secure_password
