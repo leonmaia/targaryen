@@ -1,0 +1,21 @@
+<aside>
+  <div id="sidebar" class="nav-collapse" tabindex="5000" style="overflow: hidden; outline:none;">
+    <ul class="sidebar-menu" id="nav-accordion">
+    </ul>
+  </div>
+</aside>
+<section id="main-content">
+  <section class="wrapper">
+    <div class="row">
+      <div ng-repeat="journey in home.journeys">
+        <div class="col-lg-4 col-md-4 col-sm-4 mb">
+          <div class="twitter-panel pn" ng-style="{'background-image':'url({{journey.image}})', 'background-size':'cover' }">
+            <i class="fa fa-camera-retro fa-5x"></i>
+            <p>{{journey.description}}</p>
+            <p class="user">@{{journey.author}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

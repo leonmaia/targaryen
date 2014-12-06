@@ -1,0 +1,317 @@
+  [1m[36m (16.6ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (5.2ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateProfiles (20141114133330)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (18.5ms)[0m  [1mCREATE TABLE "profiles" ("id" serial primary key, "name" character varying(255), "about" text, "date_of_birth" timestamp, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (4.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114133330"]]
+  [1m[36m (6.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUsers (20141114133546)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (5.6ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "profile_id" integer, "email" character varying(255), "username" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (1.7ms)[0m  CREATE  INDEX  "index_users_on_profile_id" ON "users"  ("profile_id")
+  [1m[36mSQL (304.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141114133546"]]
+  [1m[35m (1.5ms)[0m  COMMIT
+Migrating to CreateJourneys (20141114133734)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.0ms)[0m  CREATE TABLE "journeys" ("id" serial primary key, "user_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.8ms)[0m  [1mCREATE  INDEX  "index_journeys_on_user_id" ON "journeys"  ("user_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114133734"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateLocations (20141114133802)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (2.9ms)[0m  [1mCREATE TABLE "locations" ("id" serial primary key, "journey_id" integer, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (1.8ms)[0m  CREATE  INDEX  "index_locations_on_journey_id" ON "locations"  ("journey_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141114133802"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddUserReferenceToProfile (20141114134232)
+  [1m[36m (1.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (1.0ms)[0m  ALTER TABLE "profiles" ADD COLUMN "user_id" integer
+  [1m[36m (2.1ms)[0m  [1mCREATE  INDEX  "index_profiles_on_user_id" ON "profiles"  ("user_id")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114134232"]]
+  [1m[36m (2.0ms)[0m  [1mCOMMIT[0m
+Migrating to RemoveProfileReferenceFromUser (20141114134315)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (4.7ms)[0m  [1mALTER TABLE "users" DROP "profile_id"[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114134315"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddVenueIdToLocation (20141114173512)
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (1.0ms)[0m  [1mALTER TABLE "locations" ADD COLUMN "venue_id" character varying(255)[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114173512"]]
+  [1m[36m (1.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddPassowrdDigestToUser (20141114174701)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD COLUMN "password_digest" character varying(255)[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141114174701"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateApiTokens (20141114201350)
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (3.5ms)[0m  [1mCREATE TABLE "api_tokens" ("id" serial primary key, "access_token" character varying(255), "expires_at" timestamp, "user_id" integer, "active" boolean, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (1.6ms)[0m  CREATE  INDEX  "index_api_tokens_on_user_id" ON "api_tokens"  ("user_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141114201350"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to CreateReputations (20141117213639)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.0ms)[0m  CREATE TABLE "reputations" ("id" serial primary key, "up_votes" integer, "down_votes" integer, "title" character varying(255), "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141117213639"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+Migrating to AddingJourneyAndUserToReputation (20141117215111)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141117215111"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddUserAndJourneyToReputation (20141117220109)
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "reputations" ADD COLUMN "user_id" integer[0m
+  [1m[35m (2.0ms)[0m  CREATE  INDEX  "index_reputations_on_user_id" ON "reputations"  ("user_id")
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "reputations" ADD COLUMN "journey_id" integer[0m
+  [1m[35m (1.5ms)[0m  CREATE  INDEX  "index_reputations_on_journey_id" ON "reputations"  ("journey_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141117220109"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to RemoveUserFromReputation (20141117220433)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.7ms)[0m  ALTER TABLE "reputations" DROP "user_id"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20141117220433"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to AddProfileToReputation (20141117220458)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "reputations" ADD COLUMN "profile_id" integer
+  [1m[36m (2.2ms)[0m  [1mCREATE  INDEX  "index_reputations_on_profile_id" ON "reputations"  ("profile_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20141117220458"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (1.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (7.1ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (5.6ms)[0m  select table_name from information_schema.views where table_schema = 'targaryen_test'
+  [1m[36m (22.0ms)[0m  [1mTRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL
+  [1m[36m (3.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.8ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (21.3ms)[0m  TRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL[0m
+  [1m[35m (1.9ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (9.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE LOWER("users"."email") = LOWER('hi@leon.com') LIMIT 1[0m
+  [1m[35mSQL (3.5ms)[0m  INSERT INTO "users" ("created_at", "email", "password_digest", "updated_at", "username") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.103971"], ["email", "hi@leon.com"], ["password_digest", "$2a$04$czIx16NuJbok/ccM83V7weZrK8usMmFF0JufnsZrFtPv.sy.8gNJy"], ["updated_at", "2014-11-18 02:16:11.103971"], ["username", "leon"]]
+  [1m[36mApiToken Exists (1.3ms)[0m  [1mSELECT  1 AS one FROM "api_tokens"  WHERE "api_tokens"."access_token" = '3a7f39da3c61e5dfddbdaecad72a6f9c' LIMIT 1[0m
+  [1m[35m (0.4ms)[0m  SELECT COUNT(*) FROM "api_tokens"  WHERE "api_tokens"."active" = 't' AND "api_tokens"."user_id" = 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "api_tokens" ("access_token", "active", "created_at", "expires_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["access_token", "3a7f39da3c61e5dfddbdaecad72a6f9c"], ["active", "t"], ["created_at", "2014-11-18 02:16:11.131138"], ["expires_at", "2015-11-18 02:16:11.138799"], ["updated_at", "2014-11-18 02:16:11.131138"], ["user_id", 1]]
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "profiles" ("created_at", "updated_at", "user_id") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.151654"], ["updated_at", "2014-11-18 02:16:11.151654"], ["user_id", 1]]
+  [1m[36mSQL (2.1ms)[0m  [1mINSERT INTO "reputations" ("created_at", "profile_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.166242"], ["profile_id", 1], ["updated_at", "2014-11-18 02:16:11.166242"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "journeys" ("created_at", "updated_at", "user_id") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.186503"], ["updated_at", "2014-11-18 02:16:11.186503"], ["user_id", 1]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (2.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.201437"], ["journey_id", 1], ["updated_at", "2014-11-18 02:16:11.201437"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mJourney Load (0.7ms)[0m  [1mSELECT  "journeys".* FROM "journeys"   ORDER BY "journeys"."id" ASC LIMIT 1[0m
+  [1m[35mLocation Load (1.5ms)[0m  SELECT  "locations".* FROM "locations"  WHERE "locations"."journey_id" = $1  ORDER BY "locations"."id" ASC LIMIT 1  [["journey_id", 1]]
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (20.6ms)[0m  TRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL[0m
+  [1m[35m (2.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE LOWER("users"."email") = LOWER('hi@leon.com') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("created_at", "email", "password_digest", "updated_at", "username") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.246378"], ["email", "hi@leon.com"], ["password_digest", "$2a$04$hjXgwfr.1rj82scMoPbGi.5amgEeh/h9oDoFI2CZoI1d9V9gpGH4q"], ["updated_at", "2014-11-18 02:16:11.246378"], ["username", "leon"]]
+  [1m[36mApiToken Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "api_tokens"  WHERE "api_tokens"."access_token" = 'b93c6cc23642266b53e44469c39c658f' LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM "api_tokens"  WHERE "api_tokens"."active" = 't' AND "api_tokens"."user_id" = 2
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "api_tokens" ("access_token", "active", "created_at", "expires_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["access_token", "b93c6cc23642266b53e44469c39c658f"], ["active", "t"], ["created_at", "2014-11-18 02:16:11.248152"], ["expires_at", "2015-11-18 02:16:11.249375"], ["updated_at", "2014-11-18 02:16:11.248152"], ["user_id", 2]]
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "profiles" ("created_at", "updated_at", "user_id") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.251715"], ["updated_at", "2014-11-18 02:16:11.251715"], ["user_id", 2]]
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "reputations" ("created_at", "profile_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.253522"], ["profile_id", 2], ["updated_at", "2014-11-18 02:16:11.253522"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "journeys" ("created_at", "updated_at", "user_id") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.256729"], ["updated_at", "2014-11-18 02:16:11.256729"], ["user_id", 2]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.259058"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.259058"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.260771"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.260771"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.262057"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.262057"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.263586"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.263586"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.265199"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.265199"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.266752"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.266752"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.268130"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.268130"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.269906"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.269906"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.271499"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.271499"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.272950"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.272950"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (1.7ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.276146"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.276146"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.278911"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.278911"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.281908"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.281908"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.285174"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.285174"]]
+  [1m[36m (1.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.288930"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.288930"]]
+  [1m[35m (0.5ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.4ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.291364"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.291364"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.292827"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.292827"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.294093"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.294093"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.295690"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.295690"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.298047"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.298047"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.299883"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.299883"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.301271"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.301271"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.303636"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.303636"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.305168"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.305168"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.308253"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.308253"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.309643"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.309643"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.311696"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.311696"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.0ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.313443"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.313443"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.314456"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.314456"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.315966"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.315966"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.0ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.318127"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.318127"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.319751"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.319751"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.321406"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.321406"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.324531"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.324531"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.328590"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.328590"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.330851"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.330851"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.332832"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.332832"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.335616"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.335616"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.337622"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.337622"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.339921"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.339921"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.341481"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.341481"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.343719"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.343719"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (1.6ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.345140"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.345140"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.348035"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.348035"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.349661"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.349661"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.352070"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.352070"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.4ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.355252"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.355252"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.358535"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.358535"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["created_at", "2014-11-18 02:16:11.360822"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.360822"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "locations" ("created_at", "journey_id", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["created_at", "2014-11-18 02:16:11.363680"], ["journey_id", 2], ["updated_at", "2014-11-18 02:16:11.363680"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.4ms)[0m  SELECT COUNT(*) FROM "journeys"
+  [1m[36mJourney Load (0.1ms)[0m  [1mSELECT  "journeys".* FROM "journeys"   ORDER BY "journeys"."id" ASC LIMIT 1[0m
+  [1m[35m (0.4ms)[0m  SELECT COUNT(*) FROM "locations"  WHERE "locations"."journey_id" = $1  [["journey_id", 2]]
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (17.3ms)[0m  TRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL[0m
+  [1m[35m (1.8ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL
+  [1m[36m (18.2ms)[0m  [1mTRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL
+  [1m[36m (1.7ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (19.5ms)[0m  TRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL[0m
+  [1m[35m (2.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL
+  [1m[36m (21.7ms)[0m  [1mTRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (1.2ms)[0m  ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL
+  [1m[36m (3.6ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL[0m
+  [1m[35m (23.9ms)[0m  TRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL[0m
+  [1m[35m (1.9ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE "users"."email" IS NULL LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "journeys" DISABLE TRIGGER ALL;ALTER TABLE "profiles" DISABLE TRIGGER ALL;ALTER TABLE "locations" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "api_tokens" DISABLE TRIGGER ALL;ALTER TABLE "reputations" DISABLE TRIGGER ALL
+  [1m[36m (21.3ms)[0m  [1mTRUNCATE TABLE "journeys", "profiles", "locations", "users", "api_tokens", "reputations" RESTART IDENTITY CASCADE;[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "journeys" ENABLE TRIGGER ALL;ALTER TABLE "profiles" ENABLE TRIGGER ALL;ALTER TABLE "locations" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "api_tokens" ENABLE TRIGGER ALL;ALTER TABLE "reputations" ENABLE TRIGGER ALL
+  [1m[36m (1.6ms)[0m  [1mROLLBACK[0m
