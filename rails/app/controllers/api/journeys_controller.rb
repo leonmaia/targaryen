@@ -6,7 +6,7 @@ class Api::JourneysController < ApplicationController
       render json: @journeys, include: :locations
     else
       @journeys = Journey.all
-      render json: @journeys, include: :locations
+      respond_with @journeys, include: :locations
     end
   end
 

@@ -1,3 +1,5 @@
 {{#each}}
-  {{link-to title 'journeys.show' this}}
+ {{~#link-to 'journeys.show' this}}
+   {{title}} ({{locations.length}})
+ {{~/link-to}}
 {{/each}}
