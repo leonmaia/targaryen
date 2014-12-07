@@ -72,3 +72,10 @@ test('Should be able visit a journey page', function() {
     equal(find('h4').text(), 'Bugs Bunny');
   });
 });
+
+test('Should list all locations for a journey', function() {
+  visit('/journeys/1').then(function() {
+    equal(find('li:contains("What\'s up with Docs?")').length, 1);
+    equal(find('li:contains("Of course, you know, this means war.")').length, 1);
+  });
+});
