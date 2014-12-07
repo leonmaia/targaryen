@@ -1,7 +1,6 @@
-class ProfilesController < ApplicationController
-  before_action :authenticate, only: [:update]
+class Api::ProfilesController < ApplicationController
   before_action :set_profile, only: [:update, :show]
-  
+
   def show
     render :json => @profile
   end

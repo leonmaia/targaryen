@@ -1,5 +1,4 @@
-class JourneysController < ApplicationController
-  before_action :authenticate, except: [:index, :list]
+class Api::JourneysController < ApplicationController
 
   def index
     if params.has_key?(:user_id)
@@ -11,6 +10,10 @@ class JourneysController < ApplicationController
     end
   end
 
+  def show
+    render json: Journey.find(params[:id]), include: :locations
+  end
+
   def list
     @journeys = Journey.all
     render json: @journeys, include: :locations
@@ -18,7 +21,7 @@ class JourneysController < ApplicationController
 
   def update
     @journey = Journey.find(params[:id])
-    
+
     if @journey.update(journey_params)
       render json: @journey
     else

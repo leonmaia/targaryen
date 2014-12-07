@@ -22,7 +22,4 @@ group :test do
 end
 
 gem 'bcrypt'
-
-gem 'bower-rails'
-gem 'therubyracer', '0.12.0'
 gem 'byebug'

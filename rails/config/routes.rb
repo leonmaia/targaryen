@@ -1,12 +1,19 @@
 Rails.application.routes.draw do
   root 'home#index'
   #List every journey
-  get    '/journeys'    => 'journeys#index'
-  
+  namespace :api do
+    resources :journeys, :only => [:index, :show]
+  end
+  # scope :path => 'api', :as => 'api' do
+  #   resources :journeys, :only => [:index]
+  # end
+
   # users routes
-  resources :users, :path => '/' do
-    resources :journeys do
-      resources :locations
+  namespace :api do
+    resources :users, :path => '/' do
+      resources :journeys do
+        resources :locations
+      end
     end
   end
 

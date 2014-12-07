@@ -1,5 +1,4 @@
-class UsersController < ApplicationController
-  before_action :authenticate, except: [:create, :show]
+class Api::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
